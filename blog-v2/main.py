@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from dotenv import load_dotenv
 load_dotenv()
 from os import getenv
@@ -31,6 +31,14 @@ def show_post(post_id):
     if post:
         return render_template('post.html', post=post)
     return "Post not found", 404
+
+@app.route('/submit',methods = ["POST"])
+def submit():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get("phone")
+    message = request.form.get("message")
+    return f"name:{name} email:{email}"
 
 if __name__ == "__main__":
     app.run(debug=True)
