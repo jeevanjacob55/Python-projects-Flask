@@ -10,7 +10,9 @@ def home():
     ENDPOINT = getenv("URL")
     response = requests.get(ENDPOINT)
     data = response.json()
+    print(data)
     return render_template("index.html",posts = data)
+    
 
 @app.route('/about')
 def about():
@@ -19,17 +21,18 @@ def about():
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    ENDPOINT = getenv('URL')
+    response = requests.get(ENDPOINT)
+    posts = response.json()
+    post = next((p for p in posts if p["id"] == post_id), None)
+    if post:
+        return render_template('post.html', post=post)
+    return "Post not found", 404
+
 if __name__ == "__main__":
     app.run(debug=True)
 
 
-# @app.route('/')
-# def home():
-#     return render_template("index.html")
-
-# @app.route('/')
-# def home():
-#     return render_template("index.html")
-# @app.route('/')
-# def home():
-#     return render_template("index.html")
