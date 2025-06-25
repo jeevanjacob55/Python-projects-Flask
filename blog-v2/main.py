@@ -18,9 +18,19 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route('/contact')
+@app.route('/contact',methods = ['POST','GET'])
 def contact():
-    return render_template('contact.html')
+    if request.method == 'GET':
+        return render_template('contact.html')  # Show form on GET
+    
+    # Handle form submission on POST
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    message = request.form.get('message')
+    return render_template('form_entry.html')
+
+
 
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
@@ -32,13 +42,6 @@ def show_post(post_id):
         return render_template('post.html', post=post)
     return "Post not found", 404
 
-@app.route('/submit',methods = ["POST"])
-def submit():
-    name = request.form.get('name')
-    email = request.form.get('email')
-    phone = request.form.get("phone")
-    message = request.form.get("message")
-    return f"name:{name} email:{email}"
 
 if __name__ == "__main__":
     app.run(debug=True)
