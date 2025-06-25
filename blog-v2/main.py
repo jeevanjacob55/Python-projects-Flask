@@ -1,9 +1,16 @@
 from flask import Flask, render_template
+from dotenv import load_dotenv
+load_dotenv()
+from os import getenv
+import requests
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    ENDPOINT = getenv(URL)
+    response = requests.get(ENDPOINT)
+    data = response.json()
+    return render_template("index.html",posts = data)
 
 @app.route('/about')
 def about():
