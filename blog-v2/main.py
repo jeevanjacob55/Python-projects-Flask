@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    ENDPOINT = getenv(URL)
+    ENDPOINT = getenv("URL")
     response = requests.get(ENDPOINT)
     data = response.json()
     return render_template("index.html",posts = data)
