@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from os import getenv
 import requests
+import smtplib
 app = Flask(__name__)
 
 @app.route('/')
@@ -28,8 +29,17 @@ def contact():
     email = request.form.get('email')
     phone = request.form.get('phone')
     message = request.form.get('message')
+    send_email(name,email,phone,message)
     return render_template('form_entry.html')
 
+def send_email(name, email, phone, message):
+    email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
+    with smtplib.SMTP("smtp.gmail.com") as connection:
+        OWN_MAIL = getenv("EMAIL")
+        PASSWORD = getenv("PASSWORD")
+        connection.starttls()
+        connection.login(OWN_MAIL,PASSWORD)
+        connection.sendmail(OWN_MAIL, OWN_MAIL, email_message)
 
 
 @app.route('/post/<int:post_id>')
